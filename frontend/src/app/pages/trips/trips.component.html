@@ -1,0 +1,23 @@
+<div class="container pt-28">
+  <app-heading title="Trips" subtitle="See all your upcoming and past trips." />
+  @if (tripsResource.isLoading()) {
+    <div class="flex justify-center py-20">
+      <div class="loader"></div>
+    </div>
+  }
+
+  @if (!tripsResource.isLoading() && tripsResource.value()?.length == 0) {
+    <div class="h-[50vh] flex flex-col gap-2 justify-center items-center">
+      <app-heading title="No reservations found!" subtitle="You don`t have any reservations yet." />
+    </div>
+  }
+  <div class="mt-10 col-span-full grid-responsive">
+    @for (trips of tripsResource.value(); track trips.id) {
+      <app-listing-card
+        [data]="trips.listing"
+        actionLabel="Remove trip"
+        (onAction)="onDelete(trips.id)"
+      />
+    }
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<!-- File Pick Field -->
+<label
+  [class.opacity-50]="isUploading"
+  [class.pointer-events-none]="isUploading"
+  class="relative cursor-pointer hover:opacity-70 border-dashed border-2 p-20 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-600"
+>
+  <input type="file" accept="image/*" (change)="onFileSelected($event)" [disabled]="isUploading" />
+  @if (isUploading) {
+    <ng-icon name="bootstrapCloudUpload" size="75" aria-hidden="true" />
+  } @else {
+    <ng-icon name="heroCamera" size="75" aria-hidden="true" />
+
+    <!-- Upload Action Trigger -->
+    <button (click)="onUpload()" [disabled]="!selectedFile || isUploading">
+      {{ isUploading ? 'Uploading...' : 'Click to Upload' }}
+    </button>
+  }
+
+  <!-- Error Alerts -->
+  @if (errorMessage) {
+    <p class="error-text">{{ errorMessage }}</p>
+  }
+
+  <!-- Image Preview Panel -->
+  @if (isUploaded()) {
+    <div class="absolute inset-0 preview-box">
+      <img [src]="uploadedImageUrl()" alt="Uploaded Preview" class="preview-img" fill priority />
+      <a [href]="uploadedImageUrl()" target="_blank" class="absolute bottom-2 right-0 left-0"
+        >View Full Image</a
+      >
+    </div>
+  }
+</label>

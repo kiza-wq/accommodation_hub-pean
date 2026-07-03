@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             Int           @id @default(autoincrement())
+  name           String?
+  email          String?       @unique
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  listings       Listing[]
+  Reservations   Reservation[]
+}
+
+model Listing {
+  id            Int      @id @default(autoincrement())
+  title         String?
+  description   String?
+  imageSrc      String?
+  createdAt     DateTime @default(now())
+  category      String?
+  roomCount     Int
+  bathRoomCount Int
+  guestCount    Int
+  locationValue String?
+  price         Int
+  userId        Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  reservations Reservation[]
+}
+
+model Reservation {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  listingId  Int
+  startDate  DateTime
+  endDate    DateTime
+  totalPrice Int
+  createdAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}

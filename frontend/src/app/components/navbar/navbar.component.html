@@ -1,0 +1,26 @@
+<div class="fixed w-full bg-white z-10">
+  <div class="container py-4 border-b border-gray-200">
+    <div class="flex items-center justify-between gap-3 md:gap-0">
+      <div class="flex justify-center items-center">
+        <img
+          src="/logo.png"
+          alt="logo"
+          width="80"
+          height="80"
+          class="hidden md:block cursor-pointer"
+          routerLink="/"
+        />
+        <div class="max-w-70 flex flex-col items-center">
+          <div class="font-bold text-xl">
+            <span class="text-sky-950">Accommodation</span>
+            <span class="text-sky-700"> Hub </span>
+          </div>
+          <span class="text-xs text-gray-500">Find Your Ideal Accommodation Place</span>
+        </div>
+      </div>
+      <app-search />
+      <app-user-menu />
+    </div>
+    <app-categories />
+  </div>
+</div>

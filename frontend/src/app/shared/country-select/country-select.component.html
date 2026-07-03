@@ -1,0 +1,97 @@
+<div class="relative w-full">
+  <div
+    role="combobox"
+    [attr.aria-expanded]="dropdownOpen()"
+    aria-haspopup="listbox"
+    aria-controls="country-listbox"
+    aria-label="Select a country"
+    class="relative flex cursor-pointer items-center rounded-md border-2 border-neutral-300 p-3 focus-within:border-black"
+    (click)="openDropDown()"
+  >
+    @if (dropdownOpen()) {
+      <input
+        type="text"
+        role="searchbox"
+        aria-label="Search Countires"
+        placeholder="Search..."
+        class="w-full bg-transparent text-lg outline-none"
+        [ngModel]="filterText()"
+        (ngModelChange)="filterText.set($event)"
+        (blur)="closeDropDown()"
+      />
+    } @else {
+      <span class="flex-1 text-lg" [class.text-neutral-400]="!selectedCountry()">
+        {{ selectedCountry() ? selectedLabel() : 'Anywhere' }}
+      </span>
+    }
+    <div class="ml-2 flex shrink-0 items-center gap-1">
+      @if (selectedCountry() && !dropdownOpen()) {
+        <button
+          type="button"
+          aria-label="Clear Selection"
+          class="flex h-5 w-5 items-center justify-center rounded-full text-neutral-400 hover:text-neutral-700"
+          (click)="clearSelection()"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="text-neutral-300"
+          >
+            <path
+              d="M17 17L7 7.00002M17 7L7.00001 17"
+              stroke="black"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+        <span class="text-neutral-300">|</span>
+      }
+      <svg
+        fill="#000000"
+        width="24px"
+        height="24px"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        class="text-neutral-300 transition-transform"
+        [class.rotate-180]="dropdownOpen()"
+      >
+        <path
+          d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z"
+        />
+      </svg>
+    </div>
+  </div>
+  @if (dropdownOpen()) {
+    <ul
+      id="country-listbox"
+      role="listbox"
+      aria-label="Countries"
+      class="absolute z-9999 mt-1 max-h-60 w-full overflow-y-auto rounded-md border border-neutral-200 bg-white"
+    >
+      @if (matchingCountries().length == 0) {
+        <li class="px-4 py-3 text-sm text-neutral-400">No reults found</li>
+      }
+
+      @for (country of matchingCountries(); track country.value) {
+        <li
+          role="option"
+          [attr.aria-selected]="selectedCountry()?.value == country.value"
+          class="flex cursor-pointer items-center gap-3 px-4 py-2 text-lg transition"
+          [class.bg-sky-50]="selectedCountry()?.value == country.value"
+          [class.hover:bg-neutral-50]="selectedCountry()?.value != country.value"
+          (mousedown)="pickCountry(country)"
+        >
+          <span aria-hidden="true">{{ country.flag }}</span>
+          <span>
+            {{ country.label }}
+            <span class="ml-1 text-neutral-500"> {{ country.region }}</span>
+          </span>
+        </li>
+      }
+    </ul>
+  }
+</div>

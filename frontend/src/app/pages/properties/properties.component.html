@@ -1,0 +1,23 @@
+<div class="container pt-28">
+  <app-heading title="Properties" subtitle="See all your properties and manage with them." />
+  @if (propertiesResource.isLoading()) {
+    <div class="flex justify-center py-20">
+      <div class="loader"></div>
+    </div>
+  }
+
+  @if (!propertiesResource.isLoading() && propertiesResource.value()?.length == 0) {
+    <div class="h-[50vh] flex flex-col gap-2 justify-center items-center">
+      <app-heading title="No listings found!" subtitle="You don`t have any listings yet." />
+    </div>
+  }
+  <div class="mt-10 col-span-full grid-responsive">
+    @for (props of propertiesResource.value(); track props.id) {
+      <app-listing-card
+        [data]="props"
+        actionLabel="Remove property"
+        (onAction)="onDelete(props.id)"
+      />
+    }
+  </div>
+</div>

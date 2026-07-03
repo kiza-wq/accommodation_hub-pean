@@ -1,0 +1,59 @@
+<app-modal
+  [isOpen]="registerModal.isOpen()"
+  error=""
+  title="Register"
+  label="Continue"
+  [error]="error()"
+  (onClose)="registerModal.onClose()"
+  (onSubmit)="onSubmit()"
+>
+  <div body class="flex flex-col gap-2" [formGroup]="form">
+    <app-heading
+      title="Welcome to Accommodation Hub"
+      subtitle="Create an account."
+      [center]="true"
+    />
+    <div class="w-full pt-5">
+      <label class="text-md origin-left text-zinc-400" for="name">Name</label>
+      <input
+        id="name"
+        formControlName="name"
+        required
+        class="w-full p-4 font-light bg-white border-2 rounded-md disabled:opacity-70 disabled:cursor-not-allowed"
+        type="text"
+      />
+    </div>
+    <div class="w-full pt-5">
+      <label class="text-md origin-left text-zinc-400" for="Email">Email</label>
+      <input
+        id="email"
+        formControlName="email"
+        placeholder="example@gmail.com"
+        required
+        class="w-full p-4 font-light bg-white border-2 rounded-md disabled:opacity-70 disabled:cursor-not-allowed"
+        type="text"
+      />
+    </div>
+    <div class="w-full pt-5">
+      <label class="text-md origin-left text-zinc-400" for="password">Password</label>
+      <input
+        id="password"
+        formControlName="password"
+        required
+        class="w-full p-4 font-light bg-white border-2 rounded-md disabled:opacity-70 disabled:cursor-not-allowed"
+        type="password"
+      />
+    </div>
+  </div>
+  <div footer class="flex flex-col gap-4 mt-3">
+    <hr class="border-gray-200" />
+    <div class="text-neutral-500 text-center mt-7 font-light">
+      <div class="flex items-center gap-2 justify-center">
+        <div class="">Already have an account ?</div>
+        <div (click)="onToggle()" class="hover:underline cursor-pointer text-neutral-800">
+          Login
+        </div>
+      </div>
+    </div>
+  </div>
+</app-modal>

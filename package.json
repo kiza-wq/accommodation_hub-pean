@@ -1,0 +1,14 @@
+{
+  "name": "accommodation_hub-pean",
+  "version": "1.0.0",
+  "description": "Accommodation APP written in PostgreSQL, Express.js, Angular and Node.js...",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "DELTA SOLUTIONS",
+  "license": "ISC",
+  "dependencies": {
+    "@angular/cli": "^21.2.11"
+  }
+}

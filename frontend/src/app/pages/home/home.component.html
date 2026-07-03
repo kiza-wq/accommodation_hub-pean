@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="pt-56">
+    @if (listingResource.isLoading()) {
+      <div class="flex justify-center py-20">
+        <div class="loader"></div>
+      </div>
+    }
+
+    @if (!listingResource.isLoading() && listingResource.value()?.length == 0) {
+      <div class="h-[50vh] flex flex-col gap-2 justify-center items-center">
+        <app-heading title="No listings found!" subtitle="Start by listing your first property" />
+        <div class="w-60">
+          <button
+            type="button"
+            (click)="removeFilters()"
+            class="rounded-lg hover:opacity-80 w-full bg-sky-500 py-2 text-white text-md font-semibold"
+          >
+            Remove filters
+          </button>
+        </div>
+      </div>
+    }
+    <div class="mt-10 col-span-full grid-responsive">
+      @for (listing of listingResource.value(); track listing.id) {
+        <app-listing-card [data]="listing" />
+      }
+    </div>
+  </div>
+</div>

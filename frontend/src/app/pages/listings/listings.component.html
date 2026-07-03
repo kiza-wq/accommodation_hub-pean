@@ -1,0 +1,48 @@
+<div class="container pt-28 pb-7">
+  <div class="max-w-5xl mx-auto">
+    @if (listingResource.isLoading()) {
+      <div class="flex justify-center py-20">
+        <div class="loader"></div>
+      </div>
+    }
+    @if (listingResource.value(); as listing) {
+      <div class="space-y-6">
+        <app-heading
+          [title]="listing.title"
+          [subtitle]="location()?.region + ',' + location()?.label"
+        />
+        <img
+          [src]="listing.imageSrc"
+          [alt]="listing.title"
+          class="w-full h-[60vh] object-cover rounded-xl"
+        />
+        <div class="grid md:grid-cols-7 gap-10">
+          <div class="md:col-span-4 space-y-6">
+            <div class="flex items-center gap-2 text-xl font-semibold">
+              Hosted by {{ currentUser?.name }}
+            </div>
+            <div>
+              <div class="flex gap-4 text-sm text-neutral-500">
+                <span>{{ listing.guestCount }} guests</span>
+                <span>{{ listing.roomCount }} rooms</span>
+                <span>{{ listing.bathRoomCount }} bathrooms</span>
+              </div>
+            </div>
+            <hr class="border-gray-200" />
+            <p class="text-neutral-500">{{ listing.description }}</p>
+            <app-map [center]="location()?.latlng" />
+          </div>
+          <div class="md:col-span-3">
+            <app-listing-reservation
+              [disabledDates]="disabledDates()"
+              [price]="listing.price"
+              [dateRange]="dateRange()"
+              (dateRangeChange)="onDateRangeChange($event)"
+              (reserve)="onReserve($event)"
+            />
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

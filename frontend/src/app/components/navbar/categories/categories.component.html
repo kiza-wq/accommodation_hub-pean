@@ -1,0 +1,19 @@
+@if (isMainPage()) {
+  <nav class="pt-4 px-4 flex items-center justify-between overflow-x-auto">
+    @for (item of categories; track item.label) {
+      <button
+        type="button"
+        [ngClass]="
+          selectedCategory() == item.label
+            ? 'border-b-neutral-800 text-neutral-800'
+            : 'border-transparent text-neutral-500'
+        "
+        class="flex flex-col justify-center items-center gap-2 p-3 border-b-2 hover:text-neutral-800 cursor-pointer"
+        (click)="handleClick(item.label)"
+      >
+        <span class="text-[26px] leading-none">{{ item.icon }}</span>
+        <span class="whitespace-nowrap text-sm font-medium">{{ item.label }}</span>
+      </button>
+    }
+  </nav>
+}

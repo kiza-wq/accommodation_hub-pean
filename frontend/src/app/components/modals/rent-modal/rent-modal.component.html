@@ -1,0 +1,173 @@
+<app-modal
+  [isOpen]="rentModal.isOpen()"
+  title="Start hosting!"
+  [label]="label()"
+  (secondaryLabelAction)="onBack()"
+  (onSubmit)="onSubmit()"
+  [secondaryLabel]="showBackButton() ? 'Back' : undefined"
+  (onClose)="rentModal.onClose()"
+>
+  <div body>
+    @if (step() == Step.CATEGORY) {
+      <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-bold">What's your place like?</h2>
+          <p class="text-neutral-500">Select a category that fits</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-h[50vh] overflow-y-auto">
+          @for (item of categories; track item.label) {
+            <button
+              type="button"
+              (click)="setCategory(item.label)"
+              class="rounded-xl border-2 p-4 flex items-center gap-3 hover:border-black cursor-pointer"
+              [attr.aria-pressed]="form.controls.category.value == item.label"
+              [ngClass]="
+                form.controls.category.value == item.label
+                  ? 'border-black bg-neutral-50'
+                  : 'border-neutral-200'
+              "
+            >
+              <span class="text-2xl">{{ item.label }}</span>
+              <span class="font-medium text-xl">{{ item.icon }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    }
+    @if (step() == Step.LOCATION) {
+      <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-bold">Where is your place located?</h2>
+          <p class="text-neutral-500">Help guests find you!</p>
+          <app-country-select
+            [selectedCountry]="form.controls.location.value"
+            (countryChange)="setLocation($event)"
+          />
+          <app-map [center]="form.controls.location.value?.latlng" />
+        </div>
+      </div>
+    }
+    @if (step() == Step.INFO) {
+      <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-bold">Add basic details about your property</h2>
+          <p class="font-light text-neutral-500">What can guests expect?</p>
+        </div>
+        <hr class="border-gray-200" />
+        <app-counter
+          title="Guests"
+          subTitle="Maximum number of guests"
+          [count]="form.controls.guestCount.value!"
+          (countChange)="setCounter('guestCount', $event)"
+        />
+        <hr class="border-gray-200" />
+        <app-counter
+          title="Rooms"
+          subTitle="Total rooms"
+          [count]="form.controls.roomCount.value!"
+          (countChange)="setCounter('roomCount', $event)"
+        />
+        <hr class="border-gray-200" />
+        <app-counter
+          title="Bathrooms"
+          subTitle="Total Bathrooms"
+          [count]="form.controls.bathRoomCount.value!"
+          (countChange)="setCounter('bathRoomCount', $event)"
+        />
+      </div>
+    }
+    @if (step() == Step.IMAGE) {
+      <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-2">
+          <h2 class="text-2xl font-bold">Upload a photo of your property.</h2>
+          <p class="font-light text-neutral-500">Create a great first impression</p>
+        </div>
+        <app-image-upload
+          [uploadedImageUrl]="form.controls.imageSrc.value!"
+          (imageChange)="setImage($event)"
+        />
+      </div>
+    }
+    @if (step() == Step.DESCRIPTION) {
+      <form class="flex flex-col gap-2" [formGroup]="form">
+        <div class="flex flex-col gap-4">
+          <h2 class="text-2xl font-bold">Add a description of your property</h2>
+          <p class="font-light text-neutral-500">Keep it short and clear</p>
+
+          <div class="w-full">
+            <label for="title" class="text-zinc-400">Title</label>
+            <input
+              type="text"
+              id="title"
+              formControlName="title"
+              placeholder=""
+              class="w-full rounded-lg border-2 bg-white px-4 pt-4 pb-2 font-light outline-none disabled:cursor-not-allowed disabled:opacity-75"
+              [class.border-rose-500]="form.controls.title.invalid && form.controls.title.touched"
+              [class.border-neutral-300]="
+                !(form.controls.title.invalid && form.controls.title.touched)
+              "
+              [class.focus:border-black]="true"
+            />
+            @if (form.controls.title.invalid && form.controls.title.touched) {
+              <p class="mt-1 text-xs text-rose-500" role="alert">Title is required</p>
+            }
+          </div>
+          <hr class="border-gray-200" />
+          <div class="w-full">
+            <label for="description" class="text-zinc-400">Description</label>
+            <input
+              type="text"
+              id="description"
+              formControlName="description"
+              placeholder=""
+              class="w-full rounded-lg border-2 bg-white px-4 pt-4 pb-2 font-light outline-none disabled:cursor-not-allowed disabled:opacity-75"
+              [class.border-rose-500]="
+                form.controls.description.invalid && form.controls.description.touched
+              "
+              [class.border-neutral-300]="
+                !(form.controls.description.invalid && form.controls.description.touched)
+              "
+              [class.focus:border-black]="true"
+            />
+            @if (form.controls.description.invalid && form.controls.description.touched) {
+              <p class="mt-1 text-xs text-rose-500" role="alert">Description is required</p>
+            }
+          </div>
+        </div>
+      </form>
+    }
+    @if (step() == Step.PRICE) {
+      <form class="flex flex-col gap-8" [formGroup]="form">
+        <div class="flex flex-col">
+          <h2 class="text-2xl font-bold">Add your price</h2>
+          <p class="font-light text-neutral-500">Set the price guests will pay per night</p>
+          <div class="relative w-full">
+            <span class="absolute left-4 top-5 text-neutral-500">$</span>
+            <input
+              type="number"
+              id="price"
+              formControlName="price"
+              placeholder=""
+              class="w-full rounded-lg border-2 bg-white pl-9 pr-4 pb-2 pt-6 font-light outline-none disabled:cursor-not-allowed disabled:opacity-70"
+              [class.border-rose-500]="form.controls.price.invalid && form.controls.price.touched"
+              [class.border-neutral-300]="
+                !(form.controls.price.invalid && form.controls.price.touched)
+              "
+            />
+            <label for="price" class="absolute left-9 top-1 z-10 scale-75 text-base text-zinc-400"
+              >Price</label
+            >
+            @if (form.controls.price.invalid && form.controls.price.touched) {
+              <p class="mt-1 text-xs text-rose-500" role="alert">Price is required</p>
+            }
+          </div>
+        </div>
+        @if (error()) {
+          <div class="text-rose-500">
+            {{ error() }}
+          </div>
+        }
+      </form>
+    }
+  </div>
+</app-modal>

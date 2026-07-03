@@ -1,0 +1,77 @@
+<div class="relative">
+  <div class="flex items-center gap-3">
+    <div
+      (click)="onRent()"
+      class="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 cursor-pointer"
+    >
+      Start Hosting
+    </div>
+    <div
+      (click)="toggleOpen()"
+      class="p-4 md:py-1 border border-neutral-100 flex items-center gap-3 rounded-full cursor-pointer hover:shadow-md"
+    >
+      <ng-icon name="heroBars3Mini" size="20" />
+      <img src="/placeholder.png" alt="icon" class="object-cover h-8 w-8 rounded-full" />
+    </div>
+  </div>
+  @if (isOpen()) {
+    <div
+      class="absolute rounded-xl shadow-md w-[40vw] md:w-full bg-white overflow-hidden right-0 top-14 text-sm"
+    >
+      <div class="flex flex-col cursor-pointer">
+        @if (authService.loadSession()) {
+          <div
+            (click)="navigate('/trips')"
+            class="px-4 py-3 hover:bg-neutral-100 font-semibold cursor-pointer"
+          >
+            My Trips
+          </div>
+          <div
+            (click)="navigate('/reservations')"
+            class="px-4 py-3 hover:bg-neutral-100 font-semibold cursor-pointer"
+          >
+            My Reservations
+          </div>
+          <div
+            (click)="navigate('/properties')"
+            class="px-4 py-3 hover:bg-neutral-100 font-semibold cursor-pointer"
+          >
+            My Properties
+          </div>
+          <div
+            (click)="handleOpenRentModal()"
+            class="px-4 py-3 hover:bg-neutral-100 font-semibold cursor-pointer"
+          >
+            Host My Home
+          </div>
+          <div
+            (click)="handleAuthClick('login')"
+            class="px-4 py-3 hover:bg-neutral-100 font-semibold cursor-pointer"
+          >
+            Login
+          </div>
+          <hr class="border border-gray-200" />
+          <div
+            (click)="logout()"
+            class="px-4 py-3 hover:bg-neutral-100 font-semibold cursor-pointer"
+          >
+            Logout
+          </div>
+        } @else {
+          <div
+            (click)="handleAuthClick('login')"
+            class="px-4 py-3 hover:bg-neutral-100 font-semibold cursor-pointer"
+          >
+            Login
+          </div>
+          <div
+            (click)="handleAuthClick('register')"
+            class="px-4 py-3 hover:bg-neutral-100 font-semibold cursor-pointer"
+          >
+            Sign Up
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
